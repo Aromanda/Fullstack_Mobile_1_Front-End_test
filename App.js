@@ -4,6 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { UserProvider } from './components/shared/usercontexts';
 import Login from './components/screen/login';
 import Restaurants from './components/screen/restaurants';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importez le composant d'icônes
+
+Icon.loadFont(); // Charge les icônes
 
 const Stack = createStackNavigator();
 
