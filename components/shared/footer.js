@@ -1,40 +1,40 @@
-// import React from 'react';
-// import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-
-// const Footer = ({ navigation }) => {
-//   return (
-//     <View style={styles.footer}>
-//       <TouchableOpacity
-//         style={styles.footerButton}
-//         onPress={() => navigation.navigate('Restaurants')}
-//       >
-//         <Text style={styles.buttonText}>Restaurants</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.footerButton}
-//         onPress={() => navigation.navigate('OrderHistory')} // Replace with appropriate screen name
-//       >
-//         <Text style={styles.buttonText}>Order History</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   footer: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 10,
-//     backgroundColor: '#f2f2f2',
-//   },
-//   footerButton: {
-//     paddingHorizontal: 20,
-//   },
-//   buttonText: {
-//     fontSize: 16,
-//     color: 'blue',
-//   },
-// });
-
-// export default Footer;
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+const FooterNavbar = ({ onOrderHistoryPress }) => {
+  const navigation = useNavigation(); // Use the hook to get the navigation object
+  return (
+    <View style={styles.footerNavbar}>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.navigate('RestaurantsMenu')}>
+        <FontAwesome5 name="hamburger" size={20} color="#000" />
+        <Text style={styles.iconText}>Restaurant</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.navigate('OrderHistory')}>
+        <FontAwesome5 name="history" size={20} color="#000" />
+        <Text style={styles.iconText}>Order History</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+const styles = StyleSheet.create({
+  footerNavbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  iconContainer: {
+    alignItems: 'center',
+  },
+  iconText: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
+});
+export default FooterNavbar;

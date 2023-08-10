@@ -76,22 +76,22 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
-// import CustomNavbar from '../../shared/header';
-// import FooterNavbar from '../../shared/footer';
+import CustomNavbar from '../../components/shared/header';
+import FooterNavbar from '../../components/shared/footer';
 
-// const images = [
-//   require('../../assets/Images/Restaurants/cuisineGreek.jpg'),
-//   require('../../assets/Images/Restaurants/cuisineJapanese.jpg'),
-//   require('../../assets/Images/Restaurants/cuisinePasta.jpg'),
-//   require('../../assets/Images/Restaurants/cuisinePizza.jpg'),
-//   require('../../assets/Images/Restaurants/cuisineSoutheast.jpg'),
-//   require('../../assets/Images/Restaurants/cuisineViet.jpg'),
-//   require('../../assets/Images/Restaurants/cuisinePizza.jpg'),
-//   require('../../assets/Images/Restaurants/cuisineSoutheast.jpg'),
-// ];
+const images = [
+  require('../../assets/Images/Restaurants/cuisineGreek.jpg'),
+  require('../../assets/Images/Restaurants/cuisineJapanese.jpg'),
+  require('../../assets/Images/Restaurants/cuisinePasta.jpg'),
+  require('../../assets/Images/Restaurants/cuisinePizza.jpg'),
+  require('../../assets/Images/Restaurants/cuisineSoutheast.jpg'),
+  require('../../assets/Images/Restaurants/cuisineViet.jpg'),
+  require('../../assets/Images/Restaurants/cuisinePizza.jpg'),
+  require('../../assets/Images/Restaurants/cuisineSoutheast.jpg'),
+];
 
 const Restaurants = () => {
-  const navigation = useNavigation();
+    const navigation = useNavigation();
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +132,7 @@ const Restaurants = () => {
   const renderRestaurant = ({ item, index }) => (
     <TouchableOpacity onPress={() => navigateToRestaurantsMenu(item.id)}>
       <View style={styles.card}>
-        {/* <Image source={images[index % images.length]} style={styles.image} /> */}
+        <Image source={images[index % images.length]} style={styles.image} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.name} {`(${ '$'.repeat(item.price_range) })`}</Text>
           <Text style={styles.rating}>{'★'.repeat(item.rating)}</Text>
@@ -143,7 +143,7 @@ const Restaurants = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'space-between' }}>
-      {/* <CustomNavbar /> */}
+      <CustomNavbar />
       <ScrollView>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
@@ -199,7 +199,7 @@ const Restaurants = () => {
           />
         )}
       </ScrollView>
-      {/* <FooterNavbar /> */}
+      <FooterNavbar />
     </View>
   );
 };
