@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import CustomNavbar from '../../components/shared/header';
@@ -18,117 +18,118 @@ const images = [
 
 const Restaurants = () => {
     const navigation = useNavigation();
-  const [restaurants, setRestaurants] = useState([]);
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState(null);
-
-  useEffect(() => {
-    const url = `${process.env.EXPO_PUBLIC_NGROK_URL}/api/restaurants`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setRestaurants(data);
-        setFilteredRestaurants(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching restaurants:', error);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    const filterRestaurants = () => {
-      let result = restaurants;
-      if (selectedRating) {
-        result = result.filter((restaurant) => restaurant.rating === parseInt(selectedRating));
-      }
-      if (selectedPrice) {
-        result = result.filter((restaurant) => restaurant.price_range === parseInt(selectedPrice));
-      }
-      setFilteredRestaurants(result);
+    const [restaurants, setRestaurants] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedRating, setSelectedRating] = useState(null);
+    const [selectedPrice, setSelectedPrice] = useState(null);
+  
+    useEffect(() => {
+      const url = `${process.env.EXPO_PUBLIC_NGROK_URL}/api/restaurants`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          setRestaurants(data);
+          setFilteredRestaurants(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching restaurants:', error);
+          setLoading(false);
+        });
+    }, []);
+  
+    useEffect(() => {
+      const filterRestaurants = () => {
+        let result = restaurants;
+        if (selectedRating) {
+          result = result.filter((restaurant) => restaurant.rating === parseInt(selectedRating));
+        }
+        if (selectedPrice) {
+          result = result.filter((restaurant) => restaurant.price_range === parseInt(selectedPrice));
+        }
+        setFilteredRestaurants(result);
+      };
+      filterRestaurants();
+    }, [selectedRating, selectedPrice, restaurants]);
+  
+    const navigateToRestaurantsMenu = (restaurant_id) => navigation.navigate('RestaurantsMenu', { restaurant_id });
+  
+    const renderRestaurant = ({ item, index }) => (
+      <TouchableOpacity onPress={() => navigateToRestaurantsMenu(item.id)}>
+        <View style={styles.card}>
+          <Image source={images[index % images.length]} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{item.name} {`(${ '$'.repeat(item.price_range) })`}</Text>
+            <Text style={styles.rating}>{'★'.repeat(item.rating)}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  
+    return (
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <CustomNavbar />
+          <ScrollView>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
+              <View style={styles.pickerWrapper}>
+                <View>
+                  <Text style={styles.pickerLabel}>Rating:</Text>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={selectedRating}
+                      onValueChange={(value) => setSelectedRating(value)}
+                      style={styles.picker}
+                    >
+                      <Picker.Item label="Select" value={null} />
+                      <Picker.Item label="★" value="1" />
+                      <Picker.Item label="★★" value="2" />
+                      <Picker.Item label="★★★" value="3" />
+                      <Picker.Item label="★★★★" value="4" />
+                      <Picker.Item label="★★★★★" value="5" />
+                    </Picker>
+                  </View>
+                </View>
+                <View>
+                  <Text style={styles.pickerLabel}>Price:</Text>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={selectedPrice}
+                      onValueChange={(value) => setSelectedPrice(value)}
+                      style={styles.picker}
+                    >
+                      <Picker.Item label="Select" value={null} />
+                      <Picker.Item label="$" value="1" />
+                      <Picker.Item label="$$" value="2" />
+                      <Picker.Item label="$$$" value="3" />
+                      <Picker.Item label="$$$$" value="4" />
+                      <Picker.Item label="$$$$$" value="5" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              <Text style={styles.subHeaderText}>RESTAURANTS</Text>
+            </View>
+            {loading ? (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Loading...</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={filteredRestaurants}
+                renderItem={renderRestaurant}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                contentContainerStyle={{ padding: 10 }}
+              />
+            )}
+          </ScrollView>
+          <FooterNavbar />
+        </View>
+      );
     };
-    filterRestaurants();
-  }, [selectedRating, selectedPrice, restaurants]);
-
-  const navigateToRestaurantsMenu = (restaurant_id) => navigation.navigate('RestaurantsMenu', { restaurant_id });
-
-  const renderRestaurant = ({ item, index }) => (
-    <TouchableOpacity onPress={() => navigateToRestaurantsMenu(item.id)}>
-      <View style={styles.card}>
-        <Image source={images[index % images.length]} style={styles.image} />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{item.name} {`(${ '$'.repeat(item.price_range) })`}</Text>
-          <Text style={styles.rating}>{'★'.repeat(item.rating)}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'space-between' }}>
-      <CustomNavbar />
-      <ScrollView>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
-          <View style={styles.pickerWrapper}>
-            <View>
-              <Text style={styles.pickerLabel}>Rating:</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedRating}
-                  onValueChange={(value) => setSelectedRating(value)}
-                  style={styles.picker}
-                >
-                  <Picker.Item label="Select" value={null} />
-                  <Picker.Item label="★" value="1" />
-                  <Picker.Item label="★★" value="2" />
-                  <Picker.Item label="★★★" value="3" />
-                  <Picker.Item label="★★★★" value="4" />
-                  <Picker.Item label="★★★★★" value="5" />
-                </Picker>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.pickerLabel}>Price:</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedPrice}
-                  onValueChange={(value) => setSelectedPrice(value)}
-                  style={styles.picker}
-                >
-                  <Picker.Item label="Select" value={null} />
-                  <Picker.Item label="$" value="1" />
-                  <Picker.Item label="$$" value="2" />
-                  <Picker.Item label="$$$" value="3" />
-                  <Picker.Item label="$$$$" value="4" />
-                  <Picker.Item label="$$$$$" value="5" />
-                </Picker>
-              </View>
-            </View>
-          </View>
-          <Text style={styles.subHeaderText}>RESTAURANTS</Text>
-        </View>
-        {loading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Loading...</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={filteredRestaurants}
-            renderItem={renderRestaurant}
-            keyExtractor={(item) => item.id.toString()}
-            numColumns={2}
-            contentContainerStyle={{ padding: 10 }}
-          />
-        )}
-      </ScrollView>
-      <FooterNavbar />
-    </View>
-  );
-};
+    
 
 // StyleSheet for RestaurantsMenu
 const { width } = Dimensions.get('window');
@@ -192,6 +193,12 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     color: 'white',
+  },
+  dropdownContainer: {
+    flex: 1,
+    flexDirection: 'column', // Stack the dropdown label and picker vertically
+    alignItems: 'flex-start', // Align items to the left
+    marginBottom: 10, // Add some space between dropdowns
   },
 });
 
