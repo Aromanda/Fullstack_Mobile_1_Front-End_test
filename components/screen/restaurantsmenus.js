@@ -1,33 +1,28 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import LoginScreen from './components/LoginScreen';
-import RestaurantsScreen from './components/RestaurantsScreen';
-import OrderHistoryScreen from './components/OrderHistoryScreen'; // Import your OrderHistoryScreen component
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import CustomNavbar from '../../components/shared/header';
+import FooterNavbar from '../../components/shared/footer';
 
-const Tab = createBottomTabNavigator();
+const RestaurantsMenus = ({ route }) => {
+  const { restaurant_id } = route.params;
 
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set this based on your login logic
+  // Add your RestaurantsMenu content here
 
   return (
-    <NavigationContainer>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      {isLoggedIn ? (
-        <Tab.Navigator tabBar={(props) => <Footer {...props} />}>
-          <Tab.Screen name="Restaurants">
-            {() => <RestaurantsScreen isLoggedIn={isLoggedIn} />}
-          </Tab.Screen>
-          <Tab.Screen name="OrderHistory" component={OrderHistoryScreen} />
-          {/* Add more screens as needed */}
-        </Tab.Navigator>
-      ) : (
-        <LoginScreen />
-      )}
-    </NavigationContainer>
+    <View style={{ flex: 1 }}>
+      <CustomNavbar />
+      {/* Your RestaurantsMenu content */}
+      <FooterNavbar />
+    </View>
   );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default RestaurantsMenus;

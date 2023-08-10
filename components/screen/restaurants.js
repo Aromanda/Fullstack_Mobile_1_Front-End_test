@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import CustomNavbar from '../../components/shared/header';
 import FooterNavbar from '../../components/shared/footer';
+// import RestaurantsMenus from '../../components/screen/restaurantsmenus';
 
 const images = [
   require('../../assets/Images/Restaurants/cuisineGreek.jpg'),
@@ -53,16 +54,16 @@ const Restaurants = () => {
       filterRestaurants();
     }, [selectedRating, selectedPrice, restaurants]);
   
-    const navigateToRestaurantsMenu = (restaurant_id) => navigation.navigate('RestaurantsMenu', { restaurant_id });
+    const navigateToRestaurantsMenus = (restaurant_id) => navigation.navigate('RestaurantsMenus', { restaurant_id });
   
     const renderRestaurant = ({ item, index }) => (
-      <TouchableOpacity onPress={() => navigateToRestaurantsMenu(item.id)}>
+      <TouchableOpacity onPress={() => navigateToRestaurantsMenus(item.id)}>
         <View style={styles.card}>
-          <Image source={images[index % images.length]} style={styles.image} />
-          <View style={styles.textContainer}>
+        <View style={styles.textContainer}>
             <Text style={styles.title}>{item.name} {`(${ '$'.repeat(item.price_range) })`}</Text>
             <Text style={styles.rating}>{'★'.repeat(item.rating)}</Text>
           </View>
+          <Image source={images[index % images.length]} style={styles.image} />
         </View>
       </TouchableOpacity>
     );
@@ -70,11 +71,10 @@ const Restaurants = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
           <CustomNavbar />
-          <ScrollView>
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
               <View style={styles.pickerWrapper}>
-                <View>
+              <View style={styles.dropdownContainer}>
                   <Text style={styles.pickerLabel}>Rating:</Text>
                   <View style={styles.pickerContainer}>
                     <Picker
@@ -91,7 +91,7 @@ const Restaurants = () => {
                     </Picker>
                   </View>
                 </View>
-                <View>
+                <View style={styles.dropdownContainer}>
                   <Text style={styles.pickerLabel}>Price:</Text>
                   <View style={styles.pickerContainer}>
                     <Picker
@@ -124,7 +124,6 @@ const Restaurants = () => {
                 contentContainerStyle={{ padding: 10 }}
               />
             )}
-          </ScrollView>
           <FooterNavbar />
         </View>
       );

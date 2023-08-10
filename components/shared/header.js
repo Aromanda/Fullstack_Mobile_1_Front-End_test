@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 const { width } = Dimensions.get('window');
 const CustomNavbar = () => {
   const navigation = useNavigation();
