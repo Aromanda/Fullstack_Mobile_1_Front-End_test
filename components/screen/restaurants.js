@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import CustomNavbar from '../../components/shared/header';
 import FooterNavbar from '../../components/shared/footer';
-// import RestaurantsMenus from '../../components/screen/restaurantsmenus';
+import RestaurantsMenus from '../../components/screen/restaurantsmenus';
 
 const images = [
   require('../../assets/Images/Restaurants/cuisineGreek.jpg'),
@@ -55,11 +55,11 @@ const Restaurants = () => {
     }, [selectedRating, selectedPrice, restaurants]);
   
     const navigateToRestaurantsMenus = (restaurant_id) => navigation.navigate('RestaurantsMenus', { restaurant_id });
-  
+
     const renderRestaurant = ({ item, index }) => (
-      <TouchableOpacity onPress={() => navigateToRestaurantsMenus(item.id)}>
+      <TouchableOpacity onPress={() => navigateToRestaurantsMenus(item)}>
         <View style={styles.card}>
-        <View style={styles.textContainer}>
+          <View style={styles.textContainer}>
             <Text style={styles.title}>{item.name} {`(${ '$'.repeat(item.price_range) })`}</Text>
             <Text style={styles.rating}>{'★'.repeat(item.rating)}</Text>
           </View>
