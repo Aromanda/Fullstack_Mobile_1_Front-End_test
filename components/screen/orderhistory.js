@@ -36,9 +36,11 @@ const OrderHistory = () => {
         };
         fetchData();
     }, [userType, userId]);
+
     return (
         <View style={styles.container}>
             <CustomNavbar />
+            <View style={styles.contentContainer}>
             <Text style={styles.pageTitle}>MY ORDERS</Text>
             {loading ? (
                 <Text>Loading...</Text>
@@ -95,6 +97,7 @@ const OrderHistory = () => {
                     )}
                 </>
             )}
+            </View>
             <FooterNavbar />
         </View>
     );
@@ -103,6 +106,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8F8',
+    },
+    contentContainer: {
+        flex: 1,
         padding: 15,
     },
     pageTitle: {
