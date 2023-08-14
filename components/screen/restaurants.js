@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import CustomNavbar from '../../components/shared/header';
 import FooterNavbar from '../../components/shared/footer';
-import RestaurantsMenus from '../../components/screen/restaurantsmenus';
+// import RestaurantsMenus from '../../components/screen/restaurantsmenus';
 
 const images = [
   require('../../assets/Images/Restaurants/cuisineGreek.jpg'),
