@@ -69,19 +69,19 @@ const Restaurants = () => {
     );
   
     return (
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
-          <CustomNavbar />
+        <View style={{ flex: 1 }}>
+            <CustomNavbar />
             <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
-              <View style={styles.pickerWrapper}>
-              <View style={styles.dropdownContainer}>
-                  <Text style={styles.pickerLabel}>Rating:</Text>
-                  <View style={styles.pickerContainer}>
-                    <Picker
-                      selectedValue={selectedRating}
-                      onValueChange={(value) => setSelectedRating(value)}
-                      style={styles.picker}
-                    >
+                <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
+                <View style={styles.pickerWrapper}>
+                    <View style={styles.dropdownContainer}>
+                        <Text style={styles.pickerLabel}>Rating:</Text>
+                        <View style={styles.pickerContainer}>
+                            <Picker
+                                selectedValue={selectedRating}
+                                onValueChange={(value) => setSelectedRating(value)}
+                                style={styles.picker}
+                            >
                       <Picker.Item label="Select" value={null} />
                       <Picker.Item label="★" value="1" />
                       <Picker.Item label="★★" value="2" />
@@ -89,44 +89,38 @@ const Restaurants = () => {
                       <Picker.Item label="★★★★" value="4" />
                       <Picker.Item label="★★★★★" value="5" />
                     </Picker>
-                  </View>
-                </View>
-                <View style={styles.dropdownContainer}>
-                  <Text style={styles.pickerLabel}>Price:</Text>
-                  <View style={styles.pickerContainer}>
-                    <Picker
-                      selectedValue={selectedPrice}
-                      onValueChange={(value) => setSelectedPrice(value)}
-                      style={styles.picker}
-                    >
+                    </View>
+                    </View>
+                    <View style={styles.dropdownContainer}>
+                        <Text style={styles.pickerLabel}>Price:</Text>
+                        <View style={styles.pickerContainer}>
+                            <Picker
+                                selectedValue={selectedPrice}
+                                onValueChange={(value) => setSelectedPrice(value)}
+                                style={styles.picker}
+                            >
                       <Picker.Item label="Select" value={null} />
                       <Picker.Item label="$" value="1" />
                       <Picker.Item label="$$" value="2" />
                       <Picker.Item label="$$$" value="3" />
                       <Picker.Item label="$$$$" value="4" />
                       <Picker.Item label="$$$$$" value="5" />
-                    </Picker>
-                  </View>
+                      </Picker>
+                        </View>
+                    </View>
                 </View>
-              </View>
-              <Text style={styles.subHeaderText}>RESTAURANTS</Text>
+                <Text style={styles.subHeaderText}>RESTAURANTS</Text>
             </View>
-            {loading ? (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Loading...</Text>
-              </View>
-            ) : (
-              <FlatList
+            <FlatList
                 data={filteredRestaurants}
                 renderItem={renderRestaurant}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 contentContainerStyle={{ padding: 10 }}
-              />
-            )}
-          <FooterNavbar />
+            />
+            <FooterNavbar />
         </View>
-      );
+    );
     };
     
 
@@ -176,8 +170,10 @@ const styles = StyleSheet.create({
   pickerWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center', // Align items vertically
     marginTop: 10,
-  },
+    marginBottom: 10, // Add some space at the bottom
+},
   pickerLabel: {
     marginBottom: 5,
     fontSize: 22, // Increased from default
@@ -187,7 +183,8 @@ const styles = StyleSheet.create({
     borderColor: '#DA583B',
     backgroundColor: '#DA583B',
     borderRadius: 10,
-  },
+    flex: 1, // Allow the picker to take available space
+},
   picker: {
     width: 150,
     height: 50,
@@ -195,10 +192,10 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     flex: 1,
-    flexDirection: 'column', // Stack the dropdown label and picker vertically
-    alignItems: 'flex-start', // Align items to the left
-    marginBottom: 10, // Add some space between dropdowns
-  },
+    flexDirection: 'row', // Display label and picker in a row
+    alignItems: 'center', // Align items vertically
+    marginBottom: 10,
+},
 });
 
 export default Restaurants;
