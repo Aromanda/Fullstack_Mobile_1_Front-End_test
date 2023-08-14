@@ -75,38 +75,34 @@ const Restaurants = () => {
                 <Text style={styles.headerText}>NEARBY RESTAURANTS</Text>
                 <View style={styles.pickerWrapper}>
                     <View style={styles.dropdownContainer}>
-                        <Text style={styles.pickerLabel}>Rating:</Text>
-                        <View style={styles.pickerContainer}>
-                            <Picker
-                                selectedValue={selectedRating}
-                                onValueChange={(value) => setSelectedRating(value)}
-                                style={styles.picker}
-                            >
-                      <Picker.Item label="Select" value={null} />
-                      <Picker.Item label="★" value="1" />
-                      <Picker.Item label="★★" value="2" />
-                      <Picker.Item label="★★★" value="3" />
-                      <Picker.Item label="★★★★" value="4" />
-                      <Picker.Item label="★★★★★" value="5" />
-                    </Picker>
-                    </View>
+                        <Text style={styles.labelText}>Rating:</Text>
+                        <Picker
+                            selectedValue={selectedRating}
+                            onValueChange={(value) => setSelectedRating(value)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select" value={null} />
+                            <Picker.Item label="★" value="1" />
+                            <Picker.Item label="★★" value="2" />
+                            <Picker.Item label="★★★" value="3" />
+                            <Picker.Item label="★★★★" value="4" />
+                            <Picker.Item label="★★★★★" value="5" />
+                        </Picker>
                     </View>
                     <View style={styles.dropdownContainer}>
-                        <Text style={styles.pickerLabel}>Price:</Text>
-                        <View style={styles.pickerContainer}>
-                            <Picker
-                                selectedValue={selectedPrice}
-                                onValueChange={(value) => setSelectedPrice(value)}
-                                style={styles.picker}
-                            >
-                      <Picker.Item label="Select" value={null} />
-                      <Picker.Item label="$" value="1" />
-                      <Picker.Item label="$$" value="2" />
-                      <Picker.Item label="$$$" value="3" />
-                      <Picker.Item label="$$$$" value="4" />
-                      <Picker.Item label="$$$$$" value="5" />
-                      </Picker>
-                        </View>
+                        <Text style={styles.labelText}>Price:</Text>
+                        <Picker
+                            selectedValue={selectedPrice}
+                            onValueChange={(value) => setSelectedPrice(value)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select" value={null} />
+                            <Picker.Item label="$" value="1" />
+                            <Picker.Item label="$$" value="2" />
+                            <Picker.Item label="$$$" value="3" />
+                            <Picker.Item label="$$$$" value="4" />
+                            <Picker.Item label="$$$$$" value="5" />
+                        </Picker>
                     </View>
                 </View>
                 <Text style={styles.subHeaderText}>RESTAURANTS</Text>
@@ -160,41 +156,32 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     padding: 15,
-  },
-  headerText: {
-    fontSize: 19, // Reduced from 24
-  },
-  subHeaderText: {
-    fontSize: 20, // Increased from 18
-  },
-  pickerWrapper: {
+},
+headerText: {
+    fontSize: 19,
+},
+subHeaderText: {
+    fontSize: 20,
+},
+pickerWrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center', // Align items vertically
-    marginTop: 10,
-    marginBottom: 10, // Add some space at the bottom
+    marginTop: 5,
+    marginBottom: 100,
 },
-  pickerLabel: {
-    marginBottom: 5,
-    fontSize: 22, // Increased from default
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#DA583B',
-    backgroundColor: '#DA583B',
-    borderRadius: 10,
-    flex: 1, // Allow the picker to take available space
+labelText: {
+    fontSize: 22,
+    marginRight: 5,
 },
-  picker: {
-    width: 150,
+picker: {
+    width: 120,
     height: 50,
     color: 'white',
-  },
-  dropdownContainer: {
-    flex: 1,
-    flexDirection: 'row', // Display label and picker in a row
-    alignItems: 'center', // Align items vertically
-    marginBottom: 10,
+},
+dropdownContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
 },
 });
 
