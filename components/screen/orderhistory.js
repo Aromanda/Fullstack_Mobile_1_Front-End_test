@@ -11,8 +11,6 @@ const OrderHistory = () => {
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    // const userType = user ? user.type : 'customer';
-    // const userId = user ? user.id : '1';
 
     useEffect(() => {
         const fetchData = async () => {
