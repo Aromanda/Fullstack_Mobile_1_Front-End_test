@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvo
 import { UserContext } from '../shared/usercontexts'
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('erica.ger@gmail.com');
+//   const [email, setEmail] = useState('erica.ger@gmail.com');
+  const [email, setEmail] = useState('arturo@nienow-auer.test'); // juste customer
+//   const [email, setEmail] = useState('kimiko.wyman@yost.test'); // juste courier
   const [password, setPassword] = useState('password');
   const { setUser } = useContext(UserContext);
 
@@ -17,10 +19,17 @@ const Login = ({ navigation }) => {
       body: JSON.stringify({ email, password }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then( async (data) => {
         if (data.success) {
           Alert.alert('Login Successful!', 'You are now logged in.');
-          setUser(data.user); // Save the user data to context
+          console.log(data);
+          await setUser({
+            type: data.customer_id && data.courier_id ? "" : data.customer_id ? "customer" : "courier",
+            user_id: data.user_id,
+            customer_id: data.customer_id,
+            courier_id: data.courier_id,
+            usertype_id: data.customer_id && data.courier_id ? "" : data.customer_id ? data.customer_id : data.courier_id
+          }); // Save the user data to context
           navigation.navigate('Restaurants'); // Navigate to RestaurantsMenu screen
         } else {
           Alert.alert('Login Failed!', 'Please check your credentials and try again.');

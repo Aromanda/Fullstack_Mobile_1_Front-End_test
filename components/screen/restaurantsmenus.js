@@ -1,17 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native';
 import CustomNavbar from '../../components/shared/header';
 import FooterNavbar from '../../components/shared/footer';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../../components/shared/usercontexts';
 
 const RestaurantsMenus = ({ route }) => {
+  const { user } = useUserContext();
   const { restaurant_id } = route.params;
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [restaurant, setRestaurant] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [createOrderEnabled, setCreateOrderEnabled] = useState(false);
+  const [processingOrder, setProcessingOrder] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
   const navigation = useNavigation(); 
+
+  const confirmOrder = async () => {
+    setProcessingOrder(true);
+    try {
+      const orderDetails = {
+        restaurant_id: restaurant.id,
+        customer_id: user.customer_id,
+        products: Object.keys(quantities).map(id => ({
+          id,
+          quantity: quantities[id]
+        }))
+      };
+      console.log(orderDetails);
+      console.log("orderDetails");
+      const response = await fetch(`${process.env.EXPO_PUBLIC_NGROK_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderDetails)
+      });
+  
+      const data = await response.json();
+      console.log(data);
+      console.log("data");
+      if (response.ok) {
+        setOrderSuccess(true);
+      } else {
+        setOrderSuccess(false);
+      }
+    } catch (error) {
+      console.error('Error confirming order:', error);
+      setOrderSuccess(false);
+    }
+      setProcessingOrder(false);
+  };
 
   const navigateToRestaurants = () => {
     navigation.navigate('Restaurants'); // Navigate back to the Restaurants component
@@ -81,12 +121,17 @@ const RestaurantsMenus = ({ route }) => {
 
   const defaultImage = require('../../assets/Images/RestaurantMenu.jpg');
 
+  const formatCurrency = (amount) => {
+    // Utilisez la méthode toLocaleString pour formater le montant comme devise
+    return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  };
+
   const renderProduct = ({ item }) => (
     <View style={styles.card}>
       <Image source={defaultImage} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.productTitle}>{item.name}</Text>
-        <Text style={styles.price}>${item.price}</Text>
+        <Text style={styles.price}>{formatCurrency(item.cost)}</Text>
       </View>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={() => decrement(item.id)}>
@@ -116,14 +161,22 @@ const RestaurantsMenus = ({ route }) => {
                 {renderStars(restaurant.rating)} 
               </View>
             </View>
-            <TouchableOpacity
-              style={[styles.createOrderButton, !createOrderEnabled && styles.disabledButton]}
-              disabled={!createOrderEnabled}
-              onPress={navigateToRestaurants}
-            >
-              {/* Create Order button */}
-              <Text style={styles.createOrderButtonText}>Create Order</Text>
-            </TouchableOpacity>
+            {processingOrder ? (
+              <ActivityIndicator size="small" color="#DA583B" />
+            ) : (
+              <TouchableOpacity
+                style={[styles.createOrderButton, !createOrderEnabled && styles.disabledButton]}
+                disabled={!createOrderEnabled}
+                onPress={confirmOrder}
+              >
+                {/* Create Order button */}
+                <Text style={styles.createOrderButtonText}>
+                  {orderSuccess
+                    ? "Command received ✓"
+                    : "Confirm order"}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
         {loading ? (

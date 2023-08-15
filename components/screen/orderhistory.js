@@ -11,15 +11,22 @@ const OrderHistory = () => {
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const userType = user ? user.type : 'customer';
-    const userId = user ? user.id : '1';
+    // const userType = user ? user.type : 'customer';
+    // const userId = user ? user.id : '1';
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log(user);
+                console.log("=========================");
                 const resRestaurants = await fetch(`${process.env.EXPO_PUBLIC_NGROK_URL}/api/restaurants`);
                 const restaurants = await resRestaurants.json();
-                const resOrders = await fetch(`${process.env.EXPO_PUBLIC_NGROK_URL}/api/orders?type=${userType}&id=${userId}`);
+                const resOrders = await fetch(`${process.env.EXPO_PUBLIC_NGROK_URL}/api/orders?type=${user.type}&id=${user.usertype_id}`);
+                console.log(resOrders);
+                console.log("=========================");
                 const orderData = await resOrders.json();
+                console.log(orderData);
+                console.log("orderData");
                 const ordersWithNames = orderData.map((order) => {
                     const restaurant = restaurants.find((r) => r.id === order.restaurant_id);
                     return {
@@ -35,7 +42,7 @@ const OrderHistory = () => {
             }
         };
         fetchData();
-    }, [userType, userId]);
+    }, []);
 
     return (
         <View style={styles.container}>
