@@ -8,7 +8,7 @@ const FooterNavbar = ({ onOrderHistoryPress }) => {
     <View style={styles.footerNavbar}>
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate('RestaurantsMenu')}>
+        onPress={() => navigation.navigate('Restaurants')}>
         <FontAwesome5 name="hamburger" size={20} color="#000" />
         <Text style={styles.iconText}>Restaurant</Text>
       </TouchableOpacity>
